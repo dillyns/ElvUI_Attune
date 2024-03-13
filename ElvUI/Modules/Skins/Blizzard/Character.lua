@@ -192,6 +192,9 @@ S:AddCallback("Skin_Character", function()
 
 		if exist then
 			local quality = GetInventoryItemQuality("player", slotID)
+			local itemId = GetInventoryItemID("player", slotID)
+
+			Attune:ToggleAttuneIcon(self, itemId)
 
 			if quality then
 				self:SetBackdropBorderColor(GetItemQualityColor(quality))
@@ -200,6 +203,7 @@ S:AddCallback("Skin_Character", function()
 			end
 		else
 			self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			Attune:ToggleAttuneIcon(self, 0)
 		end
 	end
 

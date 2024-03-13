@@ -167,6 +167,9 @@ S:AddCallback("Skin_Merchant", function()
 
 				if button.link then
 					_, _, quality = GetItemInfo(button.link)
+					local itemId = tonumber(button.link:match('item:(%d+)'))
+
+					Attune:ToggleAttuneIcon(button, itemId)
 
 					if quality then
 						local r, g, b = GetItemQualityColor(quality)
@@ -185,6 +188,10 @@ S:AddCallback("Skin_Merchant", function()
 			local itemName = GetBuybackItemInfo(GetNumBuybackItems())
 			if itemName then
 				_, _, quality = GetItemInfo(itemName)
+
+				local itemLink = GetBuybackItemLink(GetNumBuybackItems())
+				local itemId = tonumber(itemLink:match('item:(%d+)'))
+				Attune:ToggleAttuneIcon(MerchantBuyBackItemItemButton, itemId)
 
 				if quality then
 					local r, g, b = GetItemQualityColor(quality)
@@ -212,11 +219,14 @@ S:AddCallback("Skin_Merchant", function()
 		for i = 1, BUYBACK_ITEMS_PER_PAGE do
 			if i <= numBuybackItems then
 				local itemName = GetBuybackItemInfo(i)
-
+				button = _G["MerchantItem"..i.."ItemButton"]
 				if itemName then
-					button = _G["MerchantItem"..i.."ItemButton"]
 					name = _G["MerchantItem"..i.."Name"]
 					_, _, quality = GetItemInfo(itemName)
+
+					local itemId = tonumber(button.link:match('item:(%d+)'))
+
+					Attune:ToggleAttuneIcon(button, itemId)
 
 					if quality then
 						local r, g, b = GetItemQualityColor(quality)

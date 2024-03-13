@@ -9,6 +9,7 @@ local unpack = unpack
 local ContainerIDToInventoryID = ContainerIDToInventoryID
 local GetContainerItemLink = GetContainerItemLink
 local GetContainerItemQuestInfo = GetContainerItemQuestInfo
+local GetContainerItemID = GetContainerItemID
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetInventoryItemLink = GetInventoryItemLink
 local GetItemInfo = GetItemInfo
@@ -68,12 +69,11 @@ S:AddCallback("Skin_Bags", function()
 
 			icon:SetInside()
 			icon:SetTexCoord(unpack(E.TexCoords))
-
+			
 			questIcon:SetTexture(E.Media.Textures.BagQuestIcon)
 			questIcon.SetTexture = E.noop
 			questIcon:SetTexCoord(0, 1, 0, 1)
 			questIcon:SetInside()
-
 			cooldown.CooldownOverride = "bags"
 			E:RegisterCooldown(cooldown)
 		end
@@ -149,6 +149,7 @@ S:AddCallback("Skin_Bags", function()
 				item.ignoreBorderColors = true
 			elseif link then
 				local isQuestItem, questId, isActive = GetContainerItemQuestInfo(id, item:GetID())
+				local itemId = GetContainerItemID(id, item:GetID())
 				local _, _, quality = GetItemInfo(link)
 
 				if questId and not isActive then

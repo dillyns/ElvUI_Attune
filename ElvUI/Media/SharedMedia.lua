@@ -163,6 +163,8 @@ E.Media = {
 	},
 	Textures = {
 		AllianceLogo = M..[[Textures\Alliance-Logo.blp]],
+		AttuneOrangeIcon = M..[[Textures\AttuneOrangeIcon.tga]],
+		AttuneGreenIcon = M..[[Textures\AttuneGreenIcon.tga]],
 		Arrow = M..[[Textures\Arrow.tga]],
 		ArrowRight = M..[[Textures\ArrowRight.tga]],
 		ArrowUp = M..[[Textures\ArrowUp.tga]],

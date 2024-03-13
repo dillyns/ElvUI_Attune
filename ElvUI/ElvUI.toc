@@ -11,6 +11,7 @@
 Developer\Load_Developer.xml
 Libraries\Load_Libraries.xml
 Init.lua
+Core\Attune.lua
 Locales\Load_Locales.xml
 Media\Load_Media.xml
 Settings\Load_Config.xml

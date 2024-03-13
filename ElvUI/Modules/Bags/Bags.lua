@@ -321,6 +321,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	slot:Show()
 	slot.questIcon:Hide()
+	Attune:ToggleAttuneIcon(slot, 0)
 	slot.JunkIcon:Hide()
 	slot.itemLevel:SetText("")
 	slot.bindType:SetText("")
@@ -343,6 +344,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.name, _, slot.rarity, iLvl, _, iType, _, _, itemEquipLoc, _, itemPrice = GetItemInfo(clink)
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
+		local itemId = GetContainerItemID(bagID, slotID)
 		local r, g, b
 
 		if slot.rarity then
@@ -390,6 +392,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 		if B.db.questIcon and (questId and not isActiveQuest) then
 			slot.questIcon:Show()
 		end
+
+		Attune:ToggleAttuneIcon(slot, itemId)
 
 		-- color slot according to item quality
 		if B.db.questItemColors and (questId and not isActiveQuest) then
@@ -1491,6 +1495,7 @@ function B:ToggleSortButtonState(isBank)
 end
 
 function B:OpenBags()
+	B:UpdateAllSlots(B.BagFrame)
 	B.BagFrame:Show()
 
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
