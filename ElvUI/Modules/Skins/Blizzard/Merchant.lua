@@ -168,7 +168,7 @@ S:AddCallback("Skin_Merchant", function()
 				if button.link then
 					_, _, quality = GetItemInfo(button.link)
 					local itemId = tonumber(button.link:match('item:(%d+)'))
-
+					
 					Attune:ToggleAttuneIcon(button, itemId)
 
 					if quality then
@@ -182,6 +182,7 @@ S:AddCallback("Skin_Merchant", function()
 				else
 					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 					name:SetTextColor(1, 1, 1)
+					Attune:ToggleAttuneIcon(button, 0)
 				end
 			end
 
@@ -203,6 +204,7 @@ S:AddCallback("Skin_Merchant", function()
 				end
 			else
 				MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				Attune:ToggleAttuneIcon(MerchantBuyBackItemItemButton, 0)
 			end
 		end
 
@@ -214,7 +216,7 @@ S:AddCallback("Skin_Merchant", function()
 
 	hooksecurefunc("MerchantFrame_UpdateBuybackInfo", function()
 		local numBuybackItems = GetNumBuybackItems()
-		local _, button, name, quality
+		local _, button, name, quality, itemLink
 
 		for i = 1, BUYBACK_ITEMS_PER_PAGE do
 			if i <= numBuybackItems then
@@ -222,9 +224,9 @@ S:AddCallback("Skin_Merchant", function()
 				button = _G["MerchantItem"..i.."ItemButton"]
 				if itemName then
 					name = _G["MerchantItem"..i.."Name"]
-					_, _, quality = GetItemInfo(itemName)
+					_, itemLink, quality = GetItemInfo(itemName)
 
-					local itemId = tonumber(button.link:match('item:(%d+)'))
+					local itemId = tonumber(itemLink:match('item:(%d+)'))
 
 					Attune:ToggleAttuneIcon(button, itemId)
 

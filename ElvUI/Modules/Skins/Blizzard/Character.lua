@@ -193,7 +193,7 @@ S:AddCallback("Skin_Character", function()
 		if exist then
 			local quality = GetInventoryItemQuality("player", slotID)
 			local itemId = GetInventoryItemID("player", slotID)
-
+			
 			Attune:ToggleAttuneIcon(self, itemId)
 
 			if quality then

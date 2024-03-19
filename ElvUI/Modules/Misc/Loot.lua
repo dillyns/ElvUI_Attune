@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule("Misc")
+local B = E:GetModule("Bags")
 
 --Lua functions
 local unpack, pairs = unpack, pairs
@@ -13,6 +14,7 @@ local CursorOnUpdate = CursorOnUpdate
 local CursorUpdate = CursorUpdate
 local GetCVar = GetCVar
 local GetCursorPosition = GetCursorPosition
+local GetItemInfo = GetItemInfo
 local GetLootSlotInfo = GetLootSlotInfo
 local GetLootSlotLink = GetLootSlotLink
 local GetNumLootItems = GetNumLootItems
@@ -221,6 +223,11 @@ function M:LOOT_OPENED(_, autoLoot)
 		for i = 1, items do
 			local slot = lootFrame.slots[i] or createSlot(i)
 			local texture, item, quantity, quality, _, isQuestItem, questId, isActive = GetLootSlotInfo(i)
+			local itemLink = GetLootSlotLink(i)
+			local itemId
+			if itemLink then
+				local itemId = tonumber(itemLink:match('item:(%d+)'))
+			end
 			local color = ITEM_QUALITY_COLORS[quality]
 
 			if texture and find(texture, "INV_Misc_Coin") then
@@ -252,6 +259,8 @@ function M:LOOT_OPENED(_, autoLoot)
 				m = max(m, quality)
 			end
 			w = max(w, slot.name:GetStringWidth())
+
+			Attune:ToggleAttuneIcon(slot, itemId)
 
 			local questTexture = slot.questTexture
 			if questId and not isActive then

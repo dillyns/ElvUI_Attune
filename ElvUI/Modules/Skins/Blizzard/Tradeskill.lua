@@ -190,6 +190,8 @@ S:AddCallbackForAddon("Blizzard_TradeSkillUI", "Skin_Blizzard_TradeSkillUI", fun
 
 		if skillLink then
 			local quality = select(3, GetItemInfo(skillLink))
+			local itemId = tonumber(skillLink:match('item:(%d+)'))
+			Attune:ToggleAttuneIcon(TradeSkillSkillIcon, itemId)
 
 			if quality then
 				r, g, b = GetItemQualityColor(quality)
