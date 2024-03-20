@@ -5,36 +5,36 @@ Attune = {}
 
 
 function Attune:AddAtuneIcon(slot)
-	if not slot.attuneOrangeIcon then
-		local attuneOrangeIcon = slot:CreateTexture(nil, "OVERLAY")
-		attuneOrangeIcon:SetTexture(E.Media.Textures.AttuneOrangeIcon)
-		attuneOrangeIcon:SetTexCoord(0, 1, 0, 1)
-		attuneOrangeIcon:SetInside()
-		attuneOrangeIcon:Hide()
-		slot.attuneOrangeIcon = attuneOrangeIcon
+	if not slot.AttunableIcon then
+		local AttunableIcon = slot:CreateTexture(nil, "OVERLAY")
+		AttunableIcon:SetTexture(E.Media.Textures.AttunableIcon)
+		AttunableIcon:SetTexCoord(0, 1, 0, 1)
+		AttunableIcon:SetInside()
+		AttunableIcon:Hide()
+		slot.AttunableIcon = AttunableIcon
 	end
 
-	if not slot.attuneGreenIcon then
-		local attuneGreenIcon = slot:CreateTexture(nil, "OVERLAY")
-		attuneGreenIcon:SetTexture(E.Media.Textures.AttuneGreenIcon)
-		attuneGreenIcon:SetTexCoord(0, 1, 0, 1)
-		attuneGreenIcon:SetInside()
-		attuneGreenIcon:Hide()
-		slot.attuneGreenIcon = attuneGreenIcon
+	if not slot.AttunedIcon then
+		local AttunedIcon = slot:CreateTexture(nil, "OVERLAY")
+		AttunedIcon:SetTexture(E.Media.Textures.AttunedIcon)
+		AttunedIcon:SetTexCoord(0, 1, 0, 1)
+		AttunedIcon:SetInside()
+		AttunedIcon:Hide()
+		slot.AttunedIcon = AttunedIcon
 	end
 end
 
 function Attune:ToggleAttuneIcon(slot, itemId)
 	Attune:AddAtuneIcon(slot)
 	if CanAttuneItemHelper(itemId) > 0 and GetItemAttuneProgress(itemId) < 100  then
-		slot.attuneOrangeIcon:Show()
-		slot.attuneGreenIcon:Hide()
+		slot.AttunableIcon:Show()
+		slot.AttunedIcon:Hide()
 	elseif CanAttuneItemHelper(itemId) > 0 and GetItemAttuneProgress(itemId) >= 100 then
-		slot.attuneOrangeIcon:Hide()
-		slot.attuneGreenIcon:Show()
+		slot.AttunableIcon:Hide()
+		slot.AttunedIcon:Show()
 	else
-		slot.attuneOrangeIcon:Hide()
-		slot.attuneGreenIcon:Hide()
+		slot.AttunableIcon:Hide()
+		slot.AttunedIcon:Hide()
 	end
 	Attune:UpdateItemLevelText(slot, itemId)
 end
