@@ -270,6 +270,7 @@ S:AddCallback("Skin_Character", function()
 		local _, _, quality = GetItemInfo(id)
 
 		button:SetBackdropBorderColor(GetItemQualityColor(quality))
+		Attune:ToggleAttuneIcon(button, id)
 	end)
 
 	local function handleResistanceFrame(frameName)
