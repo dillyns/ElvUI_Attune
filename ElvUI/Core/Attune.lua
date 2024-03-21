@@ -33,16 +33,16 @@ function Attune:ToggleAttuneIcon(slot, itemId)
 	slot.AttunableIcon:Hide()
 	slot.AttunedIcon:Hide()
 
-	if Attune:CheckItemValid(itemId) == -2 then
+	if Attune:CheckItemValid(itemId) == -2 and itemId ~= 0 then
 		slot.AttunableIcon:SetTexture(E.Media.Textures["AttunableIcon"])
 		slot.AttunableIcon:Show()
 	end
 
-	if Attune:CheckItemValid(itemId) == 0 then
+	if Attune:CheckItemValid(itemId) == 0 and itemId ~= 0 then
 		slot.AttunableIcon:Hide()
 	end
 
-	if Attune:CheckItemValid(itemId) == 1 then
+	if Attune:CheckItemValid(itemId) == 1 and itemId ~= 0 then
 		if progress < 100 then
 			slot.AttunableIcon:SetTexture(E.Media.Textures["AttunableIcon_" .. progressIndex])
 			slot.AttunableIcon:Show()
