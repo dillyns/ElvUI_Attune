@@ -20,5 +20,5 @@ This UI will arrange your interface to be more flexible and practical.
 
 ## Changes vs original:
 
-* Display attune from Synastria private server status on the items icon: green for attuned, orange for not attuned
+* Display attune from Synastria private server status on the items icon: green for attuned, yellow for not attuned, red for cannot be attuned items.
 * Display item levels in character sheet 
