@@ -5,9 +5,10 @@
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
-## OptionalDeps: Blizzard_DebugTools, SharedMedia, Tukui, ButtonFacade
+## OptionalDeps: Blizzard_DebugTools, SharedMedia, Tukui, ButtonFacade, SynastriaCoreLib
 ## X-oUF: ElvUF
 
+Libs\SynastriaCoreLib\SynastriaCoreLib.lua
 Developer\Load_Developer.xml
 Libraries\Load_Libraries.xml
 Init.lua

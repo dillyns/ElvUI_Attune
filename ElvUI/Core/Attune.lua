@@ -26,16 +26,27 @@ end
 
 function Attune:ToggleAttuneIcon(slot, itemId)
 	Attune:AddAtuneIcon(slot)
-	if CanAttuneItemHelper(itemId) > 0 and GetItemAttuneProgress(itemId) < 100  then
-		slot.AttunableIcon:Show()
-		slot.AttunedIcon:Hide()
-	elseif CanAttuneItemHelper(itemId) > 0 and GetItemAttuneProgress(itemId) >= 100 then
-		slot.AttunableIcon:Hide()
-		slot.AttunedIcon:Show()
-	else
-		slot.AttunableIcon:Hide()
-		slot.AttunedIcon:Hide()
+
+	local progress = GetItemAttuneProgress(itemId)
+	local progressIndex = math.floor(progress / 2.5)
+
+	slot.AttunableIcon:Hide()
+	slot.AttunedIcon:Hide()
+
+	if CanAttuneItemHelper(itemId) > 0 and progress < 100 then
+			slot.AttunableIcon:SetTexture(E.Media.Textures["AttunableIcon_" .. progressIndex])
+			slot.AttunableIcon:Show()
+	elseif CanAttuneItemHelper(itemId) > 0 then
+			slot.AttunedIcon:Show()
+	elseif itemId ~= 0 and SynastriaCoreLib then
+			local checkItemValidResult = SynastriaCoreLib.CheckItemValid(itemId)
+			if checkItemValidResult == -2 then
+					slot.AttunableIcon:Show()
+			end
+	elseif itemId ~= 0 and CanAttuneItemHelper(itemId) == 0 then
+			slot.AttunableIcon:Show()
 	end
+
 	Attune:UpdateItemLevelText(slot, itemId)
 end
 
