@@ -39,7 +39,7 @@ function Attune:ToggleAttuneIcon(slot, itemId)
 	elseif CanAttuneItemHelper(itemId) > 0 then
 			slot.AttunedIcon:Show()
 	elseif itemId ~= 0 and SynastriaCoreLib then
-			local checkItemValidResult = SynastriaCoreLib.CheckItemValid(itemId)
+			local checkItemValidResult = Attune:CheckItemValid(itemId)
 			if checkItemValidResult == -2 then
 					slot.AttunableIcon:Show()
 			end
@@ -48,6 +48,11 @@ function Attune:ToggleAttuneIcon(slot, itemId)
 	end
 
 	Attune:UpdateItemLevelText(slot, itemId)
+end
+
+function Attune:CheckItemValid(itemId)
+	if type(itemId) ~= "number" then return 0 end
+	return CanAttuneItemHelper(itemId)
 end
 
 function Attune:UpdateItemLevelText(slot, itemId)
