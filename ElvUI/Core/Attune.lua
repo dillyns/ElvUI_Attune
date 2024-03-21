@@ -33,20 +33,24 @@ function Attune:ToggleAttuneIcon(slot, itemId)
 	slot.AttunableIcon:Hide()
 	slot.AttunedIcon:Hide()
 
-	if CanAttuneItemHelper(itemId) > 0 and progress < 100 then
-			slot.AttunableIcon:SetTexture(E.Media.Textures["AttunableIcon_" .. progressIndex])
-			slot.AttunableIcon:Show()
-	elseif CanAttuneItemHelper(itemId) > 0 then
-			slot.AttunedIcon:Show()
-	elseif itemId ~= 0 and SynastriaCoreLib then
-			local checkItemValidResult = Attune:CheckItemValid(itemId)
-			if checkItemValidResult == -2 then
-					slot.AttunableIcon:Show()
-			end
-	elseif itemId ~= 0 and CanAttuneItemHelper(itemId) == 0 then
-			slot.AttunableIcon:Show()
+	if Attune:CheckItemValid(itemId) == -2 then
+		slot.AttunableIcon:SetTexture(E.Media.Textures["AttunableIcon"])
+		slot.AttunableIcon:Show()
 	end
 
+	if Attune:CheckItemValid(itemId) == 0 then
+		slot.AttunableIcon:Hide()
+	end
+
+	if Attune:CheckItemValid(itemId) == 1 then
+		if progress < 100 then
+			slot.AttunableIcon:SetTexture(E.Media.Textures["AttunableIcon_" .. progressIndex])
+			slot.AttunableIcon:Show()
+		else
+			slot.AttunableIcon:Hide()
+			slot.AttunedIcon:Show()
+		end
+	end
 	Attune:UpdateItemLevelText(slot, itemId)
 end
 
@@ -59,7 +63,8 @@ function Attune:UpdateItemLevelText(slot, itemId)
 	if not slot.itemLevel then
 		slot.itemLevel = slot:CreateFontString(nil, "OVERLAY")
 		slot.itemLevel:Point("BOTTOMRIGHT", -1, 3)
-		slot.itemLevel:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+		slot.itemLevel:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize,
+			E.db.bags.itemLevelFontOutline)
 	end
 	slot.itemLevel:SetText("")
 
@@ -68,11 +73,11 @@ function Attune:UpdateItemLevelText(slot, itemId)
 		if iLvl and B.db.itemLevel and (itemEquipLoc ~= nil and itemEquipLoc ~= "" and itemEquipLoc ~= "INVTYPE_AMMO" and itemEquipLoc ~= "INVTYPE_BAG" and itemEquipLoc ~= "INVTYPE_QUIVER" and itemEquipLoc ~= "INVTYPE_TABARD") and (itemRarity and itemRarity > 1) and iLvl >= B.db.itemLevelThreshold then
 			slot.itemLevel:SetText(iLvl)
 			if B.db.itemLevelCustomColorEnable then
-				slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
+				slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor
+					.b)
 			else
 				slot.itemLevel:SetTextColor(GetItemQualityColor(itemRarity))
 			end
 		end
 	end
-
 end
