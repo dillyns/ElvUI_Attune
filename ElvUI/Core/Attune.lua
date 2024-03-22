@@ -2,56 +2,73 @@ local E, L, V, P, G = unpack(ElvUI);
 local B = E:GetModule("Bags")
 
 Attune = {}
-
+local unpack = unpack
 
 function Attune:AddAtuneIcon(slot)
-	if not slot.AttunableIcon then
-		local AttunableIcon = slot:CreateTexture(nil, "OVERLAY")
-		AttunableIcon:SetTexture(E.Media.Textures.AttunableIcon)
-		AttunableIcon:SetTexCoord(0, 1, 0, 1)
-		AttunableIcon:SetInside()
-		AttunableIcon:Hide()
-		slot.AttunableIcon = AttunableIcon
+	if not slot.AttuneTextureBorder then
+		local AttuneTextureBorder = slot:CreateTexture(nil, "ARTWORK")
+		AttuneTextureBorder:SetTexture(E.Media.Textures.AttuneIconWhite)
+		AttuneTextureBorder:SetVertexColor(0, 0, 0)
+		AttuneTextureBorder:Hide()
+		slot.AttuneTextureBorder = AttuneTextureBorder
 	end
 
-	if not slot.AttunedIcon then
-		local AttunedIcon = slot:CreateTexture(nil, "OVERLAY")
-		AttunedIcon:SetTexture(E.Media.Textures.AttunedIcon)
-		AttunedIcon:SetTexCoord(0, 1, 0, 1)
-		AttunedIcon:SetInside()
-		AttunedIcon:Hide()
-		slot.AttunedIcon = AttunedIcon
+	if not slot.AttuneTexture then
+		local AttuneTexture = slot:CreateTexture(nil, "OVERLAY")
+		AttuneTexture:SetTexture(E.Media.Textures.AttuneIconWhite)
+		AttuneTexture:Hide()
+		slot.AttuneTexture = AttuneTexture
 	end
 end
 
 function Attune:ToggleAttuneIcon(slot, itemId)
-	Attune:AddAtuneIcon(slot)
-
-	local progress = GetItemAttuneProgress(itemId)
-	local progressIndex = math.floor(progress / 2.5)
-
-	slot.AttunableIcon:Hide()
-	slot.AttunedIcon:Hide()
-
-	if Attune:CheckItemValid(itemId) == -2 and itemId ~= 0 then
-		slot.AttunableIcon:SetTexture(E.Media.Textures["AttunableIcon"])
-		slot.AttunableIcon:Show()
-	end
-
-	if Attune:CheckItemValid(itemId) == 0 and itemId ~= 0 then
-		slot.AttunableIcon:Hide()
-	end
-
-	if Attune:CheckItemValid(itemId) == 1 and itemId ~= 0 then
-		if progress < 100 then
-			slot.AttunableIcon:SetTexture(E.Media.Textures["AttunableIcon_" .. progressIndex])
-			slot.AttunableIcon:Show()
-		else
-			slot.AttunableIcon:Hide()
-			slot.AttunedIcon:Show()
-		end
-	end
 	Attune:UpdateItemLevelText(slot, itemId)
+	Attune:AddAtuneIcon(slot)
+	slot.AttuneTexture:Hide()
+	slot.AttuneTextureBorder:Hide()
+	if not E.db.bags.attuneProgress or itemId == 0 then
+		return
+	end
+	if  Attune:CheckItemValid(itemId) == 0 then
+		return
+	end
+
+	local margin = 2
+	local borderWidth = 1
+	local maxHeight = slot:GetHeight() - (margin*2 + borderWidth*2)
+	local minHeight = maxHeight * 0.2
+	local width = 8 - borderWidth * 2
+
+	slot.AttuneTextureBorder:SetPoint("BOTTOMLEFT", margin, margin)
+	slot.AttuneTextureBorder:SetWidth(width + borderWidth*2)
+	slot.AttuneTexture:SetPoint("BOTTOMLEFT", margin + borderWidth, margin + borderWidth)
+	slot.AttuneTexture:SetWidth(width)
+
+	if Attune:CheckItemValid(itemId) == -2 then
+		slot.AttuneTextureBorder:SetHeight(minHeight + borderWidth*2)
+		slot.AttuneTexture:SetHeight(minHeight)
+		slot.AttuneTexture:SetVertexColor(0.74, 0.02, 0.02)
+		slot.AttuneTextureBorder:Show()
+		slot.AttuneTexture:Show()
+	elseif Attune:CheckItemValid(itemId) == 1 then
+		local progress = GetItemAttuneProgress(itemId)
+		if progress < 100 then
+			local height = math.max(maxHeight * (progress/100), minHeight)
+			slot.AttuneTextureBorder:SetHeight(height + borderWidth*2)
+			slot.AttuneTexture:SetHeight(height)
+			slot.AttuneTexture:SetVertexColor(0.96, 0.63, 0.02)
+		else
+			slot.AttuneTextureBorder:SetHeight(maxHeight + borderWidth*2)
+			slot.AttuneTexture:SetHeight(maxHeight)
+			if not E.db.bags.alternateProgressAttuneColor then
+				slot.AttuneTexture:SetVertexColor(0, 0.64, 0.05)
+			else
+				slot.AttuneTexture:SetVertexColor(0.39, 0.56, 1)
+			end
+		end
+		slot.AttuneTextureBorder:Show()
+		slot.AttuneTexture:Show()
+	end
 end
 
 function Attune:CheckItemValid(itemId)
