@@ -275,8 +275,17 @@ S:AddCallbackForAddon("Blizzard_AuctionUI", "Skin_Blizzard_AuctionUI", function(
 	hooksecurefunc("AuctionFrameBrowse_Update", function()
 		local scrollShown = BrowseScrollFrame:IsShown()
 
+		local offset = FauxScrollFrame_GetOffset(BrowseScrollFrame);
+
 		for i = 1, NUM_BROWSE_TO_DISPLAY do
 			_G["BrowseButton"..i]:Width(scrollShown and 608 or 629)
+			local itemLink =  GetAuctionItemLink("list", offset + i)
+			if itemLink ~= nil then
+				local itemId = tonumber(itemLink:match('item:(%d+)'))
+				local buttonName = "BrowseButton"..i;
+				local itemName = _G[buttonName.."Name"];
+				Attune:ToggleAttuneIcon(itemName.parent.itemButton, itemId)
+			end
 		end
 
 		BrowseCurrentBidSort:Width(scrollShown and 188 or 209)
@@ -383,7 +392,6 @@ S:AddCallbackForAddon("Blizzard_AuctionUI", "Skin_Blizzard_AuctionUI", function(
 			normalTexture:SetInside()
 
 			local _, _, _, quality = GetAuctionSellItemInfo()
-
 			if quality then
 				self:SetBackdropBorderColor(GetItemQualityColor(quality))
 			else
