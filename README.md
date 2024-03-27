@@ -17,6 +17,7 @@ This UI will arrange your interface to be more flexible and practical.
 3. Open the folder "ElvUI-(#.##)"
 4. Copy (or drag and drop) **ElvUI** and **ElvUI_OptionsUI** into your Wow-Directory\Interface\AddOns
 5. Restart WoW
+6. Enable the Attune in `Elvui` -> `Bag` settings
 
 ## Changes vs original:
 
