@@ -22,6 +22,8 @@ This UI will arrange your interface to be more flexible and practical.
 ## Changes vs original:
 
 * Display attune from Synastria private server status on the items icon: green for attuned, yellow for not attuned, red for cannot be attuned items.
-* Display item levels in character sheet 
+* Display item levels in character sheet
+
+
 ![image](https://github.com/aurele-l/ElvUI_Attune/assets/9089337/89542e85-031d-49e1-b6e2-d078c96a980d)
 
