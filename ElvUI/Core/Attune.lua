@@ -21,7 +21,23 @@ function Attune:AddAtuneIcon(slot)
 	end
 end
 
+function string:endswith(suffix)
+    return self:sub(-#suffix) == suffix
+end
+
 function Attune:ToggleAttuneIcon(slot, itemId)
+	-- on /reload the attune functions will error out for the first few calls
+	-- to work around that we catch the error in ToggleAttuneIcon and validate if that's the case
+	-- if not, we call it again without catching the error 
+	local ok, res = pcall(ToggleAttuneIcon, slot, itemId)
+	if not ok then
+		if res == nil or not res:endswith("attempt to call global 'CanAttuneItemHelper' (a nil value)") then
+			ToggleAttuneIcon(slot, itemId)
+		end
+	end
+end
+
+function ToggleAttuneIcon(slot, itemId)
 	Attune:UpdateItemLevelText(slot, itemId)
 	Attune:AddAtuneIcon(slot)
 	slot.AttuneTexture:Hide()
