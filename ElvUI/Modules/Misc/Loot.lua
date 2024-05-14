@@ -224,10 +224,7 @@ function M:LOOT_OPENED(_, autoLoot)
 			local slot = lootFrame.slots[i] or createSlot(i)
 			local texture, item, quantity, quality, _, isQuestItem, questId, isActive = GetLootSlotInfo(i)
 			local itemLink = GetLootSlotLink(i)
-			local itemId
-			if itemLink then
-				local itemId = tonumber(itemLink:match('item:(%d+)'))
-			end
+			Attune:ToggleAttuneIcon(slot, itemLink)
 			local color = ITEM_QUALITY_COLORS[quality]
 
 			if texture and find(texture, "INV_Misc_Coin") then
@@ -260,7 +257,7 @@ function M:LOOT_OPENED(_, autoLoot)
 			end
 			w = max(w, slot.name:GetStringWidth())
 
-			Attune:ToggleAttuneIcon(slot, itemId)
+			
 
 			local questTexture = slot.questTexture
 			if questId and not isActive then

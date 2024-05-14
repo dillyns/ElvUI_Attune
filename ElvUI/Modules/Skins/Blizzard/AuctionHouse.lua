@@ -281,10 +281,9 @@ S:AddCallbackForAddon("Blizzard_AuctionUI", "Skin_Blizzard_AuctionUI", function(
 			_G["BrowseButton"..i]:Width(scrollShown and 608 or 629)
 			local itemLink =  GetAuctionItemLink("list", offset + i)
 			if itemLink ~= nil then
-				local itemId = tonumber(itemLink:match('item:(%d+)'))
 				local buttonName = "BrowseButton"..i;
 				local itemName = _G[buttonName.."Name"];
-				Attune:ToggleAttuneIcon(itemName.parent.itemButton, itemId)
+				Attune:ToggleAttuneIcon(itemName.parent.itemButton, itemLink)
 			end
 		end
 

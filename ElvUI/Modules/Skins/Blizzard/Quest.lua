@@ -264,6 +264,7 @@ S:AddCallback("Skin_Quest", function()
 
 	local function questQualityColors(frame, text, link)
 		local quality = link and select(3, GetItemInfo(link))
+		Attune:ToggleAttuneIcon(frame, link, 40)
 
 		if quality then
 			local r, g, b = GetItemQualityColor(quality)

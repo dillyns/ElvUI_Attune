@@ -164,12 +164,10 @@ S:AddCallback("Skin_Merchant", function()
 			if index <= numMerchantItems then
 				button = _G["MerchantItem"..i.."ItemButton"]
 				name = _G["MerchantItem"..i.."Name"]
-
+				
+				Attune:ToggleAttuneIcon(button, button.link)
 				if button.link then
 					_, _, quality = GetItemInfo(button.link)
-					local itemId = tonumber(button.link:match('item:(%d+)'))
-					
-					Attune:ToggleAttuneIcon(button, itemId)
 
 					if quality then
 						local r, g, b = GetItemQualityColor(quality)
@@ -182,7 +180,6 @@ S:AddCallback("Skin_Merchant", function()
 				else
 					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 					name:SetTextColor(1, 1, 1)
-					Attune:ToggleAttuneIcon(button, 0)
 				end
 			end
 
@@ -191,8 +188,7 @@ S:AddCallback("Skin_Merchant", function()
 				_, _, quality = GetItemInfo(itemName)
 
 				local itemLink = GetBuybackItemLink(GetNumBuybackItems())
-				local itemId = tonumber(itemLink:match('item:(%d+)'))
-				Attune:ToggleAttuneIcon(MerchantBuyBackItemItemButton, itemId)
+				Attune:ToggleAttuneIcon(MerchantBuyBackItemItemButton, itemLink)
 
 				if quality then
 					local r, g, b = GetItemQualityColor(quality)
@@ -204,7 +200,7 @@ S:AddCallback("Skin_Merchant", function()
 				end
 			else
 				MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				Attune:ToggleAttuneIcon(MerchantBuyBackItemItemButton, 0)
+				Attune:ToggleAttuneIcon(MerchantBuyBackItemItemButton)
 			end
 		end
 
@@ -219,16 +215,15 @@ S:AddCallback("Skin_Merchant", function()
 		local _, button, name, quality, itemLink
 
 		for i = 1, BUYBACK_ITEMS_PER_PAGE do
+			button = _G["MerchantItem"..i.."ItemButton"]
+			Attune:ToggleAttuneIcon(button)
+			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			if i <= numBuybackItems then
 				local itemName = GetBuybackItemInfo(i)
-				button = _G["MerchantItem"..i.."ItemButton"]
 				if itemName then
 					name = _G["MerchantItem"..i.."Name"]
 					_, itemLink, quality = GetItemInfo(itemName)
-
-					local itemId = tonumber(itemLink:match('item:(%d+)'))
-
-					Attune:ToggleAttuneIcon(button, itemId)
+					Attune:ToggleAttuneIcon(button, itemLink)
 
 					if quality then
 						local r, g, b = GetItemQualityColor(quality)

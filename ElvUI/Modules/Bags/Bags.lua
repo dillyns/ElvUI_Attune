@@ -227,7 +227,7 @@ function B:SetGuildBankSearch(query)
 			local empty = (gsub(query, "%s+", "")) == ""
 
 			for slotID = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
-				local link = GetGuildBankItemLink(tab, slotID)
+				local itemLink = GetGuildBankItemLink(tab, slotID)
 				--A column goes from 1-14, e.g. GuildBankColumn1Button14 (slotID 14) or GuildBankColumn2Button3 (slotID 17)
 				local col = ceil(slotID / 14)
 				local btn = (slotID % 14)
@@ -344,7 +344,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.name, _, slot.rarity, iLvl, _, iType, _, _, itemEquipLoc, _, itemPrice = GetItemInfo(clink)
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
-		local itemId = GetContainerItemID(bagID, slotID)
+		local itemLink = GetContainerItemLink(bagID, slotID)
 		local r, g, b
 
 		if slot.rarity then
@@ -393,7 +393,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			slot.questIcon:Show()
 		end
 
-		Attune:ToggleAttuneIcon(slot, itemId)
+		Attune:ToggleAttuneIcon(slot, itemLink)
 
 		-- color slot according to item quality
 		if B.db.questItemColors and (questId and not isActiveQuest) then

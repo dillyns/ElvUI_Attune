@@ -192,9 +192,9 @@ S:AddCallback("Skin_Character", function()
 
 		if exist then
 			local quality = GetInventoryItemQuality("player", slotID)
-			local itemId = GetInventoryItemID("player", slotID)
-			
-			Attune:ToggleAttuneIcon(self, itemId)
+			local itemLink = GetInventoryItemLink("player", slotID)
+
+			Attune:ToggleAttuneIcon(self, itemLink)
 
 			if quality then
 				self:SetBackdropBorderColor(GetItemQualityColor(quality))
@@ -203,7 +203,7 @@ S:AddCallback("Skin_Character", function()
 			end
 		else
 			self:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			Attune:ToggleAttuneIcon(self, 0)
+			Attune:ToggleAttuneIcon(self)
 		end
 	end
 
@@ -264,13 +264,13 @@ S:AddCallback("Skin_Character", function()
 			E:RegisterCooldown(button.cooldown)
 		end
 
+		Attune:ToggleAttuneIcon(button)
 		if not button.location or button.location >= PDFITEMFLYOUT_FIRST_SPECIAL_LOCATION then return end
 
 		local id = EquipmentManager_GetItemInfoByLocation(button.location)
 		local _, _, quality = GetItemInfo(id)
 
 		button:SetBackdropBorderColor(GetItemQualityColor(quality))
-		Attune:ToggleAttuneIcon(button, id)
 	end)
 
 	local function handleResistanceFrame(frameName)

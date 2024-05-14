@@ -113,12 +113,10 @@ S:AddCallbackForAddon("Blizzard_GuildBankUI", "Skin_Blizzard_GuildBankUI", funct
 
 		for i = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
 			link = GetGuildBankItemLink(tab, i)
+			Attune:ToggleAttuneIcon(buttonMap[i], link)
 
 			if link then
 				_, _, quality = GetItemInfo(link)
-
-				local itemId = tonumber(link:match('item:(%d+)'))
-				Attune:ToggleAttuneIcon(buttonMap[i], itemId)
 
 				if quality and quality > 1 then
 					buttonMap[i]:SetBackdropBorderColor(GetItemQualityColor(quality))
@@ -127,7 +125,6 @@ S:AddCallbackForAddon("Blizzard_GuildBankUI", "Skin_Blizzard_GuildBankUI", funct
 				end
 			else
 				buttonMap[i]:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				Attune:ToggleAttuneIcon(buttonMap[i], 0)
 			end
 		end
 	end)
