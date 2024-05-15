@@ -264,13 +264,15 @@ S:AddCallback("Skin_Character", function()
 			E:RegisterCooldown(button.cooldown)
 		end
 
+		
 		Attune:ToggleAttuneIcon(button)
 		if not button.location or button.location >= PDFITEMFLYOUT_FIRST_SPECIAL_LOCATION then return end
 
 		local id = EquipmentManager_GetItemInfoByLocation(button.location)
-		local _, _, quality = GetItemInfo(id)
+		local _, link, quality = GetItemInfo(id)
 
 		button:SetBackdropBorderColor(GetItemQualityColor(quality))
+		Attune:ToggleAttuneIcon(button, link)
 	end)
 
 	local function handleResistanceFrame(frameName)
