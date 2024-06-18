@@ -31,7 +31,7 @@ function Attune:ToggleAttuneIcon(slot, itemIdOrLink, additionalXMargin)
 	if not SynastriaCoreLib.isLoaded() or not E.db.bags.attuneProgress or not itemIdOrLink then
 		return
 	end
-	if SynastriaCoreLib.CheckItemValid(itemIdOrLink) == 0 then
+	if not SynastriaCoreLib.IsAttunableBySomeone(itemIdOrLink) then
 		return
 	end
 
@@ -48,31 +48,29 @@ function Attune:ToggleAttuneIcon(slot, itemIdOrLink, additionalXMargin)
 	slot.AttuneTexture:SetPoint("BOTTOMLEFT", xMargin + borderWidth, yMargin + borderWidth)
 	slot.AttuneTexture:SetWidth(width)
 
-	if SynastriaCoreLib.CheckItemValid(itemIdOrLink) == -2 then
+	if SynastriaCoreLib.IsAttuned(itemIdOrLink) then
+		slot.AttuneTextureBorder:SetHeight(maxHeight + borderWidth*2)
+		slot.AttuneTexture:SetHeight(maxHeight)
+		if not E.db.bags.alternateProgressAttuneColor then
+			slot.AttuneTexture:SetVertexColor(0, 0.64, 0.05)
+		else
+			slot.AttuneTexture:SetVertexColor(0.39, 0.56, 1)
+		end
+	elseif SynastriaCoreLib.IsAttunable(itemIdOrLink) then
+		local progress = SynastriaCoreLib.GetAttuneProgress(itemIdOrLink)
+		local height = math.max(maxHeight * (progress/100), minHeight)
+		slot.AttuneTextureBorder:SetHeight(height + borderWidth*2)
+		slot.AttuneTexture:SetHeight(height)
+		slot.AttuneTexture:SetVertexColor(0.96, 0.63, 0.02)
+	else
 		slot.AttuneTextureBorder:SetHeight(minHeight + borderWidth*2)
 		slot.AttuneTexture:SetHeight(minHeight)
 		slot.AttuneTexture:SetVertexColor(0.74, 0.02, 0.02)
 		slot.AttuneTextureBorder:Show()
 		slot.AttuneTexture:Show()
-	elseif SynastriaCoreLib.CheckItemValid(itemIdOrLink) == 1 then
-		local progress = SynastriaCoreLib.GetAttuneProgress(itemIdOrLink)
-		if progress < 100 then
-			local height = math.max(maxHeight * (progress/100), minHeight)
-			slot.AttuneTextureBorder:SetHeight(height + borderWidth*2)
-			slot.AttuneTexture:SetHeight(height)
-			slot.AttuneTexture:SetVertexColor(0.96, 0.63, 0.02)
-		else
-			slot.AttuneTextureBorder:SetHeight(maxHeight + borderWidth*2)
-			slot.AttuneTexture:SetHeight(maxHeight)
-			if not E.db.bags.alternateProgressAttuneColor then
-				slot.AttuneTexture:SetVertexColor(0, 0.64, 0.05)
-			else
-				slot.AttuneTexture:SetVertexColor(0.39, 0.56, 1)
-			end
-		end
-		slot.AttuneTextureBorder:Show()
-		slot.AttuneTexture:Show()
 	end
+	slot.AttuneTextureBorder:Show()
+	slot.AttuneTexture:Show()
 end
 
 function Attune:UpdateItemLevelText(slot, itemIdOrLink)
