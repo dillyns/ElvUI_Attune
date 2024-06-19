@@ -48,7 +48,26 @@ function Attune:ToggleAttuneIcon(slot, itemIdOrLink, additionalXMargin)
 	slot.AttuneTexture:SetPoint("BOTTOMLEFT", xMargin + borderWidth, yMargin + borderWidth)
 	slot.AttuneTexture:SetWidth(width)
 
-	if SynastriaCoreLib.IsAttuned(itemIdOrLink) then
+	local itemString = select(3, strfind(itemIdOrLink, "|H(.+)|h"))
+	local itemStringParts = {}
+	for part in itemString:gmatch("[^:]+") do
+    	table.insert(itemStringParts, part)
+	end
+	local suffix = tonumber(itemStringParts[8])
+	local attuneProgress = SynastriaCoreLib.GetAttuneProgress(itemIdOrLink, suffix)
+	
+	if attuneProgress < 100 then
+		if SynastriaCoreLib.IsItemValid(itemIdOrLink) then
+			local height = math.max(maxHeight * (attuneProgress/100), minHeight)
+			slot.AttuneTextureBorder:SetHeight(height + borderWidth*2)
+			slot.AttuneTexture:SetHeight(height)
+			slot.AttuneTexture:SetVertexColor(0.96, 0.63, 0.02)
+		else 
+			slot.AttuneTextureBorder:SetHeight(minHeight + borderWidth*2)
+			slot.AttuneTexture:SetHeight(minHeight)
+			slot.AttuneTexture:SetVertexColor(0.74, 0.02, 0.02)
+		end
+	else
 		slot.AttuneTextureBorder:SetHeight(maxHeight + borderWidth*2)
 		slot.AttuneTexture:SetHeight(maxHeight)
 		if not E.db.bags.alternateProgressAttuneColor then
@@ -56,18 +75,6 @@ function Attune:ToggleAttuneIcon(slot, itemIdOrLink, additionalXMargin)
 		else
 			slot.AttuneTexture:SetVertexColor(0.39, 0.56, 1)
 		end
-	elseif SynastriaCoreLib.IsAttunable(itemIdOrLink) then
-		local progress = SynastriaCoreLib.GetAttuneProgress(itemIdOrLink)
-		local height = math.max(maxHeight * (progress/100), minHeight)
-		slot.AttuneTextureBorder:SetHeight(height + borderWidth*2)
-		slot.AttuneTexture:SetHeight(height)
-		slot.AttuneTexture:SetVertexColor(0.96, 0.63, 0.02)
-	else
-		slot.AttuneTextureBorder:SetHeight(minHeight + borderWidth*2)
-		slot.AttuneTexture:SetHeight(minHeight)
-		slot.AttuneTexture:SetVertexColor(0.74, 0.02, 0.02)
-		slot.AttuneTextureBorder:Show()
-		slot.AttuneTexture:Show()
 	end
 	slot.AttuneTextureBorder:Show()
 	slot.AttuneTexture:Show()
